@@ -61,21 +61,21 @@ func main() {
 	for i := 0; i < n; i++ {
 		finalPublicKey.Mul(finalPublicKey, pieces[i].Commitments[0])
 	}
-	finalPublicKey.Mod(finalPublicKey, primes.Q)
+	finalPublicKey.Mod(finalPublicKey, primes.P)
 
 	fmt.Println("PK: ", finalPublicKey, " (", finalPublicKey.BitLen(), " bits)")
 
-	m := big.NewInt(2528)
+	m := big.NewInt(1337)
 	cipher := GenerateCiphertext(m, finalPublicKey)
 
 	sk := big.NewInt(0)
 	for i := 0; i < n; i++ {
 		sk.Add(sk, pieces[i].Secret)
 	}
-	sk.Mod(sk, primes.Q)
+	sk.Mod(sk, primes.P)
 
 	fmt.Println("SK: ", sk, " (", sk.BitLen(), " bits)")
 
 	result := DecryptCiphertext(cipher, sk)
-	fmt.Println("Result: ", result, " Expected: 2528")
+	fmt.Println("Result: ", result, " Expected: 1337")
 }
